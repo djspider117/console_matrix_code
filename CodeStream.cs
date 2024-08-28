@@ -1,37 +1,33 @@
-﻿namespace BoredMatrix
+﻿namespace BoredMatrix;
+
+public class CodeStream(int sx, int sy)
 {
-    internal partial class Program
+    public int StartX = sx;
+    public int StartY = sy;
+
+    public int HeadY = sy;
+    public bool IsFinished = false;
+    public int TrailCount = 16;
+    public int Generation = 0;
+
+    public char[] Chars;
+    internal void GenerateStringContent()
     {
-        public class CodeStream(int sx, int sy)
+        Chars = Program.RandomString(TrailCount).ToCharArray();
+    }
+
+    internal void SwitchRandomChar()
+    {
+        for (int q = 0; q < Math.Max(0, TrailCount); q++)
         {
-            public int StartX = sx;
-            public int StartY = sy;
-
-            public int HeadY = sy;
-            public bool IsFinished = false;
-            public int TrailCount = 16;
-            public int Generation = 0;
-
-            public char[] Chars;
-            internal void GenerateStringContent()
+            if (DateTime.Now >= NextCharSwitch && TrailCount > 0)
             {
-                Chars = RandomString(TrailCount).ToCharArray();
+                var i = Program.Random.Next(0, TrailCount);
+                Chars[i] = (char)Program.Random.Next(33, 126);
+                NextCharSwitch = DateTime.Now.AddMilliseconds(Program.Random.Next(0, 20));
             }
-
-            internal void SwitchRandomChar()
-            {
-                for (int q = 0; q < Math.Max(0, TrailCount); q++)
-                {
-                    if (DateTime.Now >= NextCharSwitch && TrailCount > 0)
-                    {
-                        var i = _random.Next(0, TrailCount);
-                        Chars[i] = (char)_random.Next(33, 126);
-                        NextCharSwitch = DateTime.Now.AddMilliseconds(_random.Next(0, 20));
-                    }
-                }
-            }
-
-            private DateTime NextCharSwitch = DateTime.Now;
         }
     }
+
+    private DateTime NextCharSwitch = DateTime.Now;
 }
